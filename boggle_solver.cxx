@@ -192,23 +192,21 @@ void show_boggle_board(const BoggleBoard& b) {
 
 int main(int argc, char** argv) {
   if (argc != 3) {
+    cout << "Requires 2 arguments. Run using ./boggle board_file dict_file." << endl;
     return 1;
   }
   const string& board_file = argv[1];
   const string& dictionary_file = argv[2];
   try {
-    // Read the dictionary in from the input file
     vector<string> dictionary;
     read_boggle_dictionary(dictionary_file, dictionary);
     cout << "Dictionary contains " << dictionary.size() << " words." << endl;
-    // Read the board data in from the input file
+
     BoggleBoard board;
     read_boggle_board(board_file, board);
-    // Print out the board
     show_boggle_board(board);
-    // Fetch the words (you'll need to implement get_words)
+
     vector<string> words = get_boggle_words(dictionary, board);
-    // Print out the words
     cout << "Found " << words.size() << " words:" << endl;
     for(vector<string>::const_iterator it = words.begin(); it != words.end(); it++)
       cout << *it << endl;
