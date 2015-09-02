@@ -7,7 +7,7 @@
 
 class Trie {
   public:
-    Trie(const boost::shared_array<bool> adj_matrix) : m_depth(0), m_adj_matrix(adj_matrix), m_is_word(false) {}
+    Trie(const boost::shared_array<bool> adj_matrix) : m_depth(0), m_is_word(false), m_adj_matrix(adj_matrix) {}
     
     void add_word(const char *str);
     void add_words(const char **str, int len);
@@ -17,12 +17,12 @@ class Trie {
     Trie *get_sub_trie(const char c);
 
   private:
-    Trie(const int depth, const boost::shared_array<bool> adj_matrix) : m_depth(depth), m_adj_matrix(adj_matrix), m_is_word(false) {}
+    Trie(const int depth, const boost::shared_array<bool> adj_matrix) : m_depth(depth), m_is_word(false), m_adj_matrix(adj_matrix) {}
     
-    const boost::shared_array<bool> m_adj_matrix;
-    boost::shared_ptr<Trie> m_child_map[26];
     int m_depth;
     bool m_is_word;
+    const boost::shared_array<bool> m_adj_matrix;
+    boost::shared_ptr<Trie> m_child_map[26];
 
     inline bool in_adj_mat(const char* str) {
       return m_depth == 0 ? true : m_adj_matrix[(str[m_depth-1]-'a')*26 + str[m_depth]-'a'];

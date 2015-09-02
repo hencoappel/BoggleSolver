@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <bitset>
 #include <cmath>
 #include <cstring>
 #include <fstream>
@@ -9,6 +8,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <boost/dynamic_bitset.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 #include "trie.h"
@@ -30,10 +30,10 @@ const int coords[16] =
    1,  1
 };
 
-vector<string> words_longer_than(const vector<string>& words, const int len) {
+vector<string> words_longer_than(const vector<string>& words, const size_t len) {
   vector<string> filtered;
   for(vector<string>::const_iterator it = words.begin(); it != words.end(); ++it)
-    if((*it).size() > len)
+    if(len < it->size())
       filtered.insert(filtered.end(), *it);
   return filtered;
 }
@@ -54,7 +54,7 @@ boost::shared_array<int> offset_coord(const int i, const int j) {
 
 set<string> solve_recursive(Trie *dict,
                             const boost::shared_array<char>& board,
-                            bitset<10000> visited,
+                            boost::dynamic_bitset<> visited,
                             const int len,
                             const string& word, int i, int j) {
   const int board_index = i*len + j;
@@ -80,7 +80,7 @@ set<string> solve_recursive(Trie *dict,
 
 boost::shared_ptr<Trie> build_trie(const vector<string>& dict, const boost::shared_array<bool> adj_matrix) {
   boost::shared_ptr<Trie> trie(new Trie(adj_matrix));
-  for(int i = 0; i < dict.size(); i++)
+  for(size_t i = 0; i < dict.size(); i++)
     trie->add_word(dict[i].c_str());
   return trie;
 }
@@ -122,9 +122,9 @@ vector<string> get_boggle_words(const vector<string>& dictionary,
   const boost::shared_ptr<Trie> trie = build_trie(filtered_words, adj_matrix);
   set<string> words_set;
   boost::shared_array<char> b = build_board(board, board.size());
-  for (int i = 0; i < board.size(); ++i) {
-    for (int j = 0; j < board.size(); ++j) {
-      bitset<10000> v;
+  for (size_t i = 0; i < board.size(); ++i) {
+    for (size_t j = 0; j < board.size(); ++j) {
+      boost::dynamic_bitset<> v(board.size()*board.size());
       set<string> new_words = solve_recursive(trie.get(), b, v, board.size(), string(), i, j);
       words_set.insert(new_words.begin(), new_words.end());
     }
