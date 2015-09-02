@@ -13,4 +13,4 @@ So the first issue to overcome is the issue of searching through a list of words
 
 The program reduces the size of the built trie by creating building an adjacency matrix for the characters in the grid, then words which have letters adjacent that aren't in the matrix get ignored.
 
-Keeping track of visited location is done using a bitset, this limits the size of the board to 100x100 at the moment. This is used as the copying of the visited data was the limiting factor as the grid grew large.
+Keeping track of visited location is done using a bitset. This is used as the copying of the visited data was the limiting factor as the grid grew large.
